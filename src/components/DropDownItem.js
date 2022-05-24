@@ -1,16 +1,16 @@
-
+import PropTypes from 'prop-types';
 import "../App.css";
-import { useState } from "react";
 
-const DropDownItem = () => {
+const DropDownItem = (props) => {
+    const { currentShelf } = props;
 
     return (
         <div className="book-shelf-changer">
-            <select>
+            <select defaultValue={currentShelf}>
                 <option value="none" disabled>
                     Move to...
                 </option>
-                <option value="currentlyReading">
+                <option value="currentlyReading" selected={true}>
                     Currently Reading
                 </option>
                 <option value="wantToRead">Want to Read</option>
@@ -20,5 +20,9 @@ const DropDownItem = () => {
         </div>
     );
 }
+
+DropDownItem.propTypes = {
+    currentShelf: PropTypes.string.isRequired
+};
 
 export default DropDownItem;
