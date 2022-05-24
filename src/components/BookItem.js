@@ -3,7 +3,7 @@ import "../App.css";
 import DropDownItem from "./DropDownItem";
 
 const BookItem = (props) => {
-    const { book } = props;
+    const { book, onUpdateShelfType } = props;
 
     return (
         <li>
@@ -16,10 +16,11 @@ const BookItem = (props) => {
                             height: 193,
                             backgroundImage:
                                 `url(${book.imageLinks.thumbnail})`,
-                        }}
-                    ></div>
+                        }}>
+                    </div>
                     <DropDownItem
-                        currentShelf={book.shelf} />
+                        book={book}
+                        onUpdateShelfType={onUpdateShelfType} />
                 </div>
                 <div className="book-title">{book.title}</div>
                 {/* assumed it has only one author and it located in first index */}
@@ -30,7 +31,8 @@ const BookItem = (props) => {
 }
 
 BookItem.propTypes = {
-    book: PropTypes.object.isRequired
+    book: PropTypes.object.isRequired,
+    onUpdateShelfType: PropTypes.func.isRequired
 };
 
 export default BookItem;

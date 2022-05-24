@@ -3,7 +3,7 @@ import "../App.css";
 import Books from "./Books";
 
 const Shelf = (props) => {
-    const { shelfName, booksData, shelfPropertyName } = props;
+    const { shelfName, booksData, shelfPropertyName, onUpdateShelfType } = props;
 
     return (
         <div className="bookshelf">
@@ -13,6 +13,7 @@ const Shelf = (props) => {
                     shelfName={shelfName}
                     shelfPropertyName={shelfPropertyName}
                     booksData={booksData}
+                    onUpdateShelfType={onUpdateShelfType}
                 />
             </div>
         </div>
@@ -22,7 +23,8 @@ const Shelf = (props) => {
 Shelf.propTypes = {
     booksData: PropTypes.array.isRequired,
     shelfName: PropTypes.string.isRequired,
-    shelfPropertyName: PropTypes.string.isRequired
+    shelfPropertyName: PropTypes.string.isRequired,
+    onUpdateShelfType: PropTypes.func.isRequired
 };
 
 export default Shelf;

@@ -2,15 +2,19 @@ import PropTypes from 'prop-types';
 import "../App.css";
 
 const DropDownItem = (props) => {
-    const { currentShelf } = props;
+    const { book, onUpdateShelfType } = props;
+
+    const onChangShelf = (book, shelf) => {
+        onUpdateShelfType(book, shelf)
+    }
 
     return (
         <div className="book-shelf-changer">
-            <select defaultValue={currentShelf}>
+            <select defaultValue={book.shelf} onChange={(event) => onChangShelf(book, event.target.value)}>
                 <option value="none" disabled>
                     Move to...
                 </option>
-                <option value="currentlyReading" selected={true}>
+                <option value="currentlyReading">
                     Currently Reading
                 </option>
                 <option value="wantToRead">Want to Read</option>
@@ -22,7 +26,8 @@ const DropDownItem = (props) => {
 }
 
 DropDownItem.propTypes = {
-    currentShelf: PropTypes.string.isRequired
+    book: PropTypes.object.isRequired,
+    onUpdateShelfType: PropTypes.func.isRequired
 };
 
 export default DropDownItem;
