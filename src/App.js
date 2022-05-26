@@ -1,10 +1,12 @@
-import "./App.css";
 import { useState, useEffect } from "react";
+import { Route, Routes } from 'react-router-dom';
+import "./App.css";
+import { Link } from 'react-router-dom';
 import Shelf from "./components/Shelf";
 import { getAll, update } from "./utils/BooksAPI";
+import Search from "./components/Search";
 
 function App() {
-  const [showSearchPage, setShowSearchpage] = useState(false);
   const [booksData, setBooksData] = useState([]);
 
   const getBooksData = async () => {
@@ -35,60 +37,52 @@ function App() {
 
   return (
     <div className="app">
-      {showSearchPage ? (
-        <div className="search-books">
-          <div className="search-books-bar">
-            <a
-              className="close-search"
-              onClick={() => setShowSearchpage(!showSearchPage)}
-            >
-              Close
-            </a>
-            <div className="search-books-input-wrapper">
-              <input
-                type="text"
-                placeholder="Search by title, author, or ISBN"
-              />
+      <Routes>
+        <Route
+          path="/search"
+          element={
+            <Search
+              onUpdateShelfType={updateShelfType} />
+          }
+        />
+        <Route
+          exact
+          path="/"
+          element={
+            <div className="list-books">
+              <div className="list-books-title">
+                <h1>MyReads</h1>
+              </div>
+              <div className="list-books-content">
+                {booksData && <div>
+                  <Shelf
+                    shelfName="Currently Reading"
+                    shelfPropertyName="currentlyReading"
+                    booksData={booksData}
+                    onUpdateShelfType={updateShelfType}
+                  />
+
+                  <Shelf
+                    shelfName="Want to Read"
+                    shelfPropertyName="wantToRead"
+                    booksData={booksData}
+                    onUpdateShelfType={updateShelfType}
+                  />
+                  <Shelf
+                    shelfName="Read"
+                    shelfPropertyName="read"
+                    booksData={booksData}
+                    onUpdateShelfType={updateShelfType}
+                  />
+                </div>}
+              </div>
+              <div className="open-search">
+                <Link to="/search">Search</Link>
+              </div>
             </div>
-          </div>
-          <div className="search-books-results">
-            <ol className="books-grid"></ol>
-          </div>
-        </div>
-      ) : (
-        <div className="list-books">
-          <div className="list-books-title">
-            <h1>MyReads</h1>
-          </div>
-          <div className="list-books-content">
-            {booksData && <div>
-              <Shelf
-                shelfName="Currently Reading"
-                shelfPropertyName="currentlyReading"
-                booksData={booksData}
-                onUpdateShelfType={updateShelfType}
-              />
-
-              <Shelf
-                shelfName="Want to Read"
-                shelfPropertyName="wantToRead"
-                booksData={booksData}
-                onUpdateShelfType={updateShelfType}
-              />
-              <Shelf
-                shelfName="Read"
-                shelfPropertyName="read"
-                booksData={booksData}
-                onUpdateShelfType={updateShelfType}
-              />
-
-            </div>}
-          </div>
-          <div className="open-search">
-            <a onClick={() => setShowSearchpage(!showSearchPage)}>Add a book</a>
-          </div>
-        </div>
-      )}
+          }
+        />
+      </Routes>
     </div>
   );
 }

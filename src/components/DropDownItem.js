@@ -10,7 +10,7 @@ const DropDownItem = (props) => {
 
     return (
         <div className="book-shelf-changer">
-            <select defaultValue={book.shelf} onChange={(event) => onChangShelf(book, event.target.value)}>
+            <select defaultValue={book.shelf || "none"} onChange={(event) => onChangShelf(book, event.target.value)}>
                 <option value="none" disabled>
                     Move to...
                 </option>
