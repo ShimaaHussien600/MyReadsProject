@@ -7,13 +7,22 @@ import Books from "./Books";
 
 const Search = (props) => {
     const [query, setQuery] = useState("");
-    const { onUpdateShelfType } = props;
+    const [noResult, setNoResult] = useState(false);
     const [searchedBooks, setSearchedBooks] = useState([]);
+    const { onUpdateShelfType } = props;
 
     const updateQuery = async (query) => {
         setQuery(query.trim());
         if (query) {
             const res = await search(query.trim(), 10);
+            if (res.length > 0) {
+                setSearchedBooks(res);
+                setNoResult(false);
+            }
+            else {
+                setSearchedBooks([]);
+                setNoResult(true);
+            }
             res.length > 0 ? setSearchedBooks(res) : setSearchedBooks([])
         }
     };
@@ -33,13 +42,16 @@ const Search = (props) => {
                 </div>
             </div>
             <div className="search-books-results">
-                <span>
-                    Now showing {searchedBooks.length}
-                </span>
+                {searchedBooks.length > 0 &&
+                    <span>
+                        Now showing {searchedBooks.length} {searchedBooks.length > 1 ? "books" : "book"}
+                    </span>
+                }
                 <Books
                     booksData={searchedBooks}
                     onUpdateShelfType={onUpdateShelfType}
                 />
+                {noResult && <img src="img/noResultFound.png" alt="noResultFoundIMG" />}
             </div>
         </div>
     );

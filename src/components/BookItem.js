@@ -23,8 +23,12 @@ const BookItem = (props) => {
                         onUpdateShelfType={onUpdateShelfType} />
                 </div>
                 <div className="book-title">{book.title}</div>
-                {/* assumed it has only one author and it located in first index */}
-                <div className="book-authors">{book.authors[0]}</div>
+                {book.authors &&
+                    book.authors.map((author, index) => (
+                        <div className="book-authors" key={index}>
+                            {author}
+                        </div>
+                    ))}
             </div>
         </li>
     );

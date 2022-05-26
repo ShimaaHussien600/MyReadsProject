@@ -54,7 +54,7 @@ function App() {
                 <h1>MyReads</h1>
               </div>
               <div className="list-books-content">
-                {booksData && <div>
+                {booksData.length > 0 && <div>
                   <Shelf
                     shelfName="Currently Reading"
                     shelfPropertyName="currentlyReading"
