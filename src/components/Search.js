@@ -23,7 +23,6 @@ const Search = (props) => {
                 setSearchedBooks([]);
                 setNoResult(true);
             }
-            res.length > 0 ? setSearchedBooks(res) : setSearchedBooks([])
         }
     };
     return (
