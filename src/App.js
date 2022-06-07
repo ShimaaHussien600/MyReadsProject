@@ -42,6 +42,7 @@ function App() {
           path="/search"
           element={
             <Search
+              booksData={booksData}
               onUpdateShelfType={updateShelfType} />
           }
         />

@@ -4,6 +4,8 @@ import DropDownItem from "./DropDownItem";
 
 const BookItem = (props) => {
     const { book, onUpdateShelfType } = props;
+    const bookImg = (book?.imageLinks?.thumbnail) ? book.imageLinks?.thumbnail :
+        "https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg"
 
     return (
         <li>
@@ -15,20 +17,19 @@ const BookItem = (props) => {
                             width: 128,
                             height: 193,
                             backgroundImage:
-                                `url(${book.imageLinks.thumbnail})`,
+                                `url(${bookImg})`,
                         }}>
                     </div>
                     <DropDownItem
                         book={book}
                         onUpdateShelfType={onUpdateShelfType} />
                 </div>
-                <div className="book-title">{book.title}</div>
+                <div className="book-title">{(book?.title )? book.title : "No Tiltle"}</div>
                 {book.authors &&
-                    book.authors.map((author, index) => (
-                        <div className="book-authors" key={index}>
-                            {author}
-                        </div>
-                    ))}
+                    <div className="book-authors" >
+                        {(book.authors).join(' - ')}
+                    </div>
+                }
             </div>
         </li>
     );

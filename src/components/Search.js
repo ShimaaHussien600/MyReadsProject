@@ -9,13 +9,20 @@ const Search = (props) => {
     const [query, setQuery] = useState("");
     const [noResult, setNoResult] = useState(false);
     const [searchedBooks, setSearchedBooks] = useState([]);
-    const { onUpdateShelfType } = props;
+    const { booksData, onUpdateShelfType } = props;
 
     const updateQuery = async (query) => {
-        setQuery(query.trim());
         if (query) {
+            setQuery(query);
             const res = await search(query.trim(), 10);
             if (res.length > 0) {
+                res.map((item,index) => {
+                    const data = booksData.find(book => book.id === item.id )
+                    if(data){
+                        // to add .shelf property to the book
+                        res[index] = data
+                    }
+                })                
                 setSearchedBooks(res);
                 setNoResult(false);
             }
@@ -23,6 +30,9 @@ const Search = (props) => {
                 setSearchedBooks([]);
                 setNoResult(true);
             }
+        }
+        else{
+            setQuery("");
         }
     };
     return (
@@ -57,6 +67,7 @@ const Search = (props) => {
 }
 
 Search.propTypes = {
+    booksData: PropTypes.array.isRequired,
     onUpdateShelfType: PropTypes.func.isRequired
 };
 
