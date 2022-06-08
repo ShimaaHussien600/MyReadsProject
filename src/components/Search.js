@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import "../App.css";
+import useDebounce from '../customHooks/useDebounce';
 import { search } from '../utils/BooksAPI';
 import Books from "./Books";
 
@@ -11,30 +12,45 @@ const Search = (props) => {
     const [searchedBooks, setSearchedBooks] = useState([]);
     const { booksData, onUpdateShelfType } = props;
 
+    const debouncedValue = useDebounce(query, 500);
+
+    useEffect(() => {
+        const fetchBooks = async query => {
+            if (query) {
+                const res = await search(query.trim(), 10);
+                if (res?.length > 0) {
+                    res.map((item, index) => {
+                        const data = booksData.find(book => book.id === item.id)
+                        if (data) {
+                            // to add .shelf property to the book
+                            res[index] = data
+                        }
+                    })
+                    setSearchedBooks(res);
+                    setNoResult(false);
+                }
+                else {
+                    setSearchedBooks([]);
+                    setNoResult(true);
+                }
+            }
+        };
+
+        fetchBooks(debouncedValue);
+
+    }, [debouncedValue])
+
     const updateQuery = async (query) => {
         if (query) {
             setQuery(query);
-            const res = await search(query.trim(), 10);
-            if (res.length > 0) {
-                res.map((item,index) => {
-                    const data = booksData.find(book => book.id === item.id )
-                    if(data){
-                        // to add .shelf property to the book
-                        res[index] = data
-                    }
-                })                
-                setSearchedBooks(res);
-                setNoResult(false);
-            }
-            else {
-                setSearchedBooks([]);
-                setNoResult(true);
-            }
         }
-        else{
+        else {
+            setSearchedBooks([]);
             setQuery("");
+            setNoResult(false);
         }
     };
+
     return (
         <div className="search-books">
             <div className="search-books-bar">
